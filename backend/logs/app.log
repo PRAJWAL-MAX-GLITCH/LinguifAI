@@ -1,0 +1,882 @@
+2026-06-11T17:45:55 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-11T17:45:55 | INFO     | main:21 | lifespan | ============================================================
+2026-06-11T17:45:55 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-11T17:45:55 | INFO     | main:23 | lifespan | ============================================================
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T17:45:55 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00100s] ()
+2026-06-11T17:45:55 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00244s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01531s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01877s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.02328s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | 
+CREATE TABLE users (
+	email VARCHAR(255) NOT NULL, 
+	username VARCHAR(100) NOT NULL, 
+	hashed_password VARCHAR(255) NOT NULL, 
+	role VARCHAR(50) NOT NULL, 
+	is_active BOOLEAN NOT NULL, 
+	is_verified BOOLEAN NOT NULL, 
+	preferred_model VARCHAR(50) NOT NULL, 
+	preferred_theme VARCHAR(20) NOT NULL, 
+	preferred_tone VARCHAR(20) NOT NULL, 
+	default_source_lang VARCHAR(10) NOT NULL, 
+	default_target_lang VARCHAR(10) NOT NULL, 
+	id UUID NOT NULL, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id)
+)
+
+
+2026-06-11T17:45:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00167s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_users_created_at ON users (created_at)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00076s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_users_id ON users (id)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00079s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE UNIQUE INDEX ix_users_username ON users (username)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00090s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE UNIQUE INDEX ix_users_email ON users (email)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00077s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | 
+CREATE TABLE translations (
+	user_id UUID NOT NULL, 
+	source_language VARCHAR(10) NOT NULL, 
+	target_language VARCHAR(10) NOT NULL, 
+	source_text TEXT NOT NULL, 
+	translated_text TEXT NOT NULL, 
+	tone VARCHAR(20) NOT NULL, 
+	ai_model VARCHAR(50) NOT NULL, 
+	confidence_score FLOAT, 
+	alternative_translations TEXT, 
+	translator_notes TEXT, 
+	is_starred BOOLEAN NOT NULL, 
+	char_count INTEGER, 
+	latency_ms INTEGER, 
+	tokens_used INTEGER, 
+	id UUID NOT NULL, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
+)
+
+
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00092s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_translations_user_id ON translations (user_id)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00078s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_translations_created_at ON translations (created_at)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00076s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_translations_target_language ON translations (target_language)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00080s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_translations_id ON translations (id)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00079s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_translations_source_language ON translations (source_language)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00077s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_translations_is_starred ON translations (is_starred)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00103s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | 
+CREATE TABLE documents (
+	user_id UUID NOT NULL, 
+	original_filename VARCHAR(500) NOT NULL, 
+	stored_filename VARCHAR(500) NOT NULL, 
+	file_type VARCHAR(10) NOT NULL, 
+	file_size_bytes BIGINT NOT NULL, 
+	source_language VARCHAR(10) NOT NULL, 
+	target_language VARCHAR(10) NOT NULL, 
+	tone VARCHAR(20) NOT NULL, 
+	ai_model VARCHAR(50) NOT NULL, 
+	status VARCHAR(20) NOT NULL, 
+	error_message VARCHAR(1000), 
+	translated_filename VARCHAR(500), 
+	id UUID NOT NULL, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
+)
+
+
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00072s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_documents_created_at ON documents (created_at)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00089s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_documents_user_id ON documents (user_id)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00085s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_documents_id ON documents (id)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00082s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_documents_status ON documents (status)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00078s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | 
+CREATE TABLE usage_logs (
+	user_id UUID NOT NULL, 
+	endpoint VARCHAR(255) NOT NULL, 
+	ai_model VARCHAR(50), 
+	tokens_used INTEGER, 
+	latency_ms INTEGER, 
+	status_code INTEGER NOT NULL, 
+	id UUID NOT NULL, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
+)
+
+
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00076s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_usage_logs_user_id ON usage_logs (user_id)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00082s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_usage_logs_id ON usage_logs (id)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00075s] ()
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | CREATE INDEX ix_usage_logs_created_at ON usage_logs (created_at)
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [no key 0.00069s] ()
+2026-06-11T17:45:56 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-11T17:45:56 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T17:45:56 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-11T17:46:01 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/login | client=172.18.0.1 | request_id=7778403d-7176-4052-acc4-57f0ad28bf64
+2026-06-11T17:46:01 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T17:46:01 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-11T17:46:01 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.01096s] ('abc152@gmail.com',)
+2026-06-11T17:46:01 | INFO     | sqlalchemy.engine.Engine:2704 | _connection_rollback_impl | ROLLBACK
+2026-06-11T17:46:01 | ERROR    | app.db.session:56 | get_db | Database session rolled back due to exception: 401: Invalid email or password.
+2026-06-11T17:46:01 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/login | status=401 | duration=102.16ms | request_id=7778403d-7176-4052-acc4-57f0ad28bf64
+2026-06-11T17:46:44 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/auth/register | client=172.18.0.1 | request_id=d1f540bd-498d-4b6b-87ae-579b9b774459
+2026-06-11T17:46:44 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/auth/register | status=200 | duration=3.65ms | request_id=d1f540bd-498d-4b6b-87ae-579b9b774459
+2026-06-11T17:46:44 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/register | client=172.18.0.1 | request_id=75538b22-700b-4788-b9cf-9b91d149184f
+2026-06-11T17:46:44 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T17:46:44 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-11T17:46:44 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 43.63s ago] ('abc123@gmail.com',)
+2026-06-11T17:46:44 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = $1::VARCHAR
+2026-06-11T17:46:44 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00076s] ('prajwal',)
+2026-06-11T17:46:44 | WARNING  | passlib.handlers.bcrypt:622 | _load_backend_mixin | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-06-11T17:46:44 | DEBUG    | passlib.handlers.bcrypt:625 | _load_backend_mixin | detected 'bcrypt' backend, version '<unknown>'
+2026-06-11T17:46:44 | DEBUG    | passlib.handlers.bcrypt:406 | _finalize_backend_mixin | 'bcrypt' backend lacks $2$ support, enabling workaround
+2026-06-11T17:46:44 | INFO     | sqlalchemy.engine.Engine:2704 | _connection_rollback_impl | ROLLBACK
+2026-06-11T17:46:44 | ERROR    | app.db.session:56 | get_db | Database session rolled back due to exception: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-06-11T17:46:44 | ERROR    | app.core.middleware:125 | dispatch | Rate limiter Redis error: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-06-11T17:52:52 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/register | status=400 | duration=367792.65ms | request_id=75538b22-700b-4788-b9cf-9b91d149184f
+2026-06-11T18:02:11 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-11T18:02:11 | INFO     | main:21 | lifespan | ============================================================
+2026-06-11T18:02:11 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-11T18:02:11 | INFO     | main:23 | lifespan | ============================================================
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:02:11 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00060s] ()
+2026-06-11T18:02:11 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00171s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01251s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01464s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01651s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-11T18:02:11 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-11T18:02:11 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:02:11 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-11T18:02:58 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/register | client=172.18.0.1 | request_id=b0b3df70-050a-4482-8f7c-93b75616020f
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00092s] ('test123@gmail.com',)
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = $1::VARCHAR
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00075s] ('testuser123',)
+2026-06-11T18:02:58 | DEBUG    | passlib.handlers.bcrypt:625 | _load_backend_mixin | detected 'bcrypt' backend, version '4.0.1'
+2026-06-11T18:02:58 | DEBUG    | passlib.handlers.bcrypt:406 | _finalize_backend_mixin | 'bcrypt' backend lacks $2$ support, enabling workaround
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | INSERT INTO users (email, username, hashed_password, role, is_active, is_verified, preferred_model, preferred_theme, preferred_tone, default_source_lang, default_target_lang, id) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::BOOLEAN, $6::BOOLEAN, $7::VARCHAR, $8::VARCHAR, $9::VARCHAR, $10::VARCHAR, $11::VARCHAR, $12::UUID) RETURNING users.created_at, users.updated_at
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00097s] ('test123@gmail.com', 'testuser123', '$2b$12$jPgL.u7nQEkdiGMvfIFjdeirkyZ08X2k1fCF6ek5zOPaKQfuNnLZ6', 'user', True, False, 'gpt-4o', 'dark', 'formal', 'auto', 'en', UUID('b022c625-fb16-415e-b78a-d9949981fab3'))
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00059s] (UUID('b022c625-fb16-415e-b78a-d9949981fab3'),)
+2026-06-11T18:02:58 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:02:58 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/register | status=201 | duration=415.52ms | request_id=b0b3df70-050a-4482-8f7c-93b75616020f
+2026-06-11T18:05:16 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/auth/register | client=172.18.0.1 | request_id=f7900e7f-66bb-42d1-86d7-ac9f58d1405f
+2026-06-11T18:05:16 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/auth/register | status=200 | duration=4.47ms | request_id=f7900e7f-66bb-42d1-86d7-ac9f58d1405f
+2026-06-11T18:05:16 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/register | client=172.18.0.1 | request_id=fc814874-b6d4-4c16-a620-0659f50ffc7b
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 138s ago] ('abc123@gmail.com',)
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = $1::VARCHAR
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 138s ago] ('prajwal',)
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | INSERT INTO users (email, username, hashed_password, role, is_active, is_verified, preferred_model, preferred_theme, preferred_tone, default_source_lang, default_target_lang, id) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::BOOLEAN, $6::BOOLEAN, $7::VARCHAR, $8::VARCHAR, $9::VARCHAR, $10::VARCHAR, $11::VARCHAR, $12::UUID) RETURNING users.created_at, users.updated_at
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 138s ago] ('abc123@gmail.com', 'prajwal', '$2b$12$j/bA0HJ4vqHefEDZIRtNFONhKaJa3.T2I2ARSG3BKezFiMiTytvRC', 'user', True, False, 'gpt-4o', 'dark', 'formal', 'auto', 'en', UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'))
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 138s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:05:16 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/register | status=201 | duration=348.78ms | request_id=fc814874-b6d4-4c16-a620-0659f50ffc7b
+2026-06-11T18:05:16 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/login | client=172.18.0.1 | request_id=62a7bec6-de2e-49fd-9114-28a4c409cc1e
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-11T18:05:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 138.7s ago] ('abc123@gmail.com',)
+2026-06-11T18:05:17 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:05:17 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/login | status=200 | duration=321.26ms | request_id=62a7bec6-de2e-49fd-9114-28a4c409cc1e
+2026-06-11T18:05:17 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/auth/me | client=172.18.0.1 | request_id=788901e6-401c-476d-af6c-1c96ad6be80c
+2026-06-11T18:05:17 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:05:17 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-11T18:05:17 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00073s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-11T18:05:17 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:05:17 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/auth/me | status=200 | duration=14.38ms | request_id=788901e6-401c-476d-af6c-1c96ad6be80c
+2026-06-11T18:06:05 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/translate/models | client=172.18.0.1 | request_id=752e3101-0147-4aed-a576-7ed0b3bf1521
+2026-06-11T18:06:05 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/translate/models | status=200 | duration=22.56ms | request_id=752e3101-0147-4aed-a576-7ed0b3bf1521
+2026-06-11T18:06:05 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/translate/models | client=172.18.0.1 | request_id=674eb409-6d4c-4b0f-8430-f309d4d2b102
+2026-06-11T18:06:05 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/languages | client=172.18.0.1 | request_id=3dfd5d60-689f-48a5-93cd-80ebf9bc7959
+2026-06-11T18:06:05 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/languages | status=200 | duration=10.60ms | request_id=3dfd5d60-689f-48a5-93cd-80ebf9bc7959
+2026-06-11T18:06:05 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:06:05 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-11T18:06:05 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 48.1s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-11T18:06:05 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/languages | client=172.18.0.1 | request_id=c2521f1d-4d6f-43c0-b7ff-2cdef5c36983
+2026-06-11T18:06:05 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:06:05 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/languages | status=200 | duration=55.62ms | request_id=c2521f1d-4d6f-43c0-b7ff-2cdef5c36983
+2026-06-11T18:06:05 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/translate/models | status=200 | duration=142.16ms | request_id=674eb409-6d4c-4b0f-8430-f309d4d2b102
+2026-06-11T18:06:26 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/history | client=172.18.0.1 | request_id=f9f6c93f-5fa5-433c-ab45-0703ed8b8d46
+2026-06-11T18:06:26 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/history | status=200 | duration=2.98ms | request_id=f9f6c93f-5fa5-433c-ab45-0703ed8b8d46
+2026-06-11T18:06:26 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/history | client=172.18.0.1 | request_id=2a57e774-5c58-49c5-b1c6-ab3f0801f428
+2026-06-11T18:06:26 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:06:26 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-11T18:06:26 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 69.37s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-11T18:06:26 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT count(*) AS count_1 
+FROM translations 
+WHERE translations.user_id = $1::UUID
+2026-06-11T18:06:26 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00141s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-11T18:06:26 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT translations.user_id, translations.source_language, translations.target_language, translations.source_text, translations.translated_text, translations.tone, translations.ai_model, translations.confidence_score, translations.alternative_translations, translations.translator_notes, translations.is_starred, translations.char_count, translations.latency_ms, translations.tokens_used, translations.id, translations.created_at, translations.updated_at 
+FROM translations 
+WHERE translations.user_id = $1::UUID ORDER BY translations.created_at DESC 
+ LIMIT $2::INTEGER OFFSET $3::INTEGER
+2026-06-11T18:06:26 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00117s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'), 10, 0)
+2026-06-11T18:06:27 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:06:27 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/history | status=200 | duration=458.06ms | request_id=2a57e774-5c58-49c5-b1c6-ab3f0801f428
+2026-06-11T18:06:28 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/documents | client=172.18.0.1 | request_id=07d3a425-213e-455d-8162-ca385d4e4b7e
+2026-06-11T18:06:28 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/documents | status=200 | duration=4.14ms | request_id=07d3a425-213e-455d-8162-ca385d4e4b7e
+2026-06-11T18:06:28 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=56aa4f5e-5314-48a7-ad8e-d306e8208b53
+2026-06-11T18:06:28 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-11T18:06:28 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-11T18:06:28 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 71.01s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-11T18:06:28 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-11T18:06:28 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00109s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-11T18:06:28 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-11T18:06:28 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=50.66ms | request_id=56aa4f5e-5314-48a7-ad8e-d306e8208b53
+2026-06-12T04:44:47 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-12T04:44:47 | INFO     | main:21 | lifespan | ============================================================
+2026-06-12T04:44:47 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-12T04:44:47 | INFO     | main:23 | lifespan | ============================================================
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T04:44:47 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00127s] ()
+2026-06-12T04:44:47 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00211s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.02053s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.02564s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.03055s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:44:47 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-12T04:44:47 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T04:44:47 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-12T04:46:16 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-12T04:46:16 | INFO     | main:21 | lifespan | ============================================================
+2026-06-12T04:46:16 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-12T04:46:16 | INFO     | main:23 | lifespan | ============================================================
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T04:46:16 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00076s] ()
+2026-06-12T04:46:16 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00117s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.009318s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01257s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01545s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T04:46:16 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-12T04:46:16 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T04:46:16 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-12T05:08:04 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-12T05:08:04 | INFO     | main:21 | lifespan | ============================================================
+2026-06-12T05:08:04 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-12T05:08:04 | INFO     | main:23 | lifespan | ============================================================
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:08:04 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00063s] ()
+2026-06-12T05:08:04 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00146s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01069s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01372s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.0163s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:04 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-12T05:08:04 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:08:04 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-12T05:08:15 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-12T05:08:15 | INFO     | main:21 | lifespan | ============================================================
+2026-06-12T05:08:15 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-12T05:08:15 | INFO     | main:23 | lifespan | ============================================================
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:08:15 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00082s] ()
+2026-06-12T05:08:15 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00102s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01001s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01339s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01564s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:08:15 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-12T05:08:15 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:08:15 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-12T05:09:32 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-12T05:09:32 | INFO     | main:21 | lifespan | ============================================================
+2026-06-12T05:09:32 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-12T05:09:32 | INFO     | main:23 | lifespan | ============================================================
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:09:32 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00053s] ()
+2026-06-12T05:09:32 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00094s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01018s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01314s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01691s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:09:32 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-12T05:09:32 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:09:32 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-12T05:09:57 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/register | client=172.18.0.1 | request_id=efe335ed-d17e-4d1e-9a9e-98dee9f506a1
+2026-06-12T05:09:57 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00185s] ('demo@linguifai.com',)
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = $1::VARCHAR
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00110s] ('live_demo_user',)
+2026-06-12T05:09:58 | DEBUG    | passlib.handlers.bcrypt:625 | _load_backend_mixin | detected 'bcrypt' backend, version '4.0.1'
+2026-06-12T05:09:58 | DEBUG    | passlib.handlers.bcrypt:406 | _finalize_backend_mixin | 'bcrypt' backend lacks $2$ support, enabling workaround
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | INSERT INTO users (email, username, hashed_password, role, is_active, is_verified, preferred_model, preferred_theme, preferred_tone, default_source_lang, default_target_lang, id) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::BOOLEAN, $6::BOOLEAN, $7::VARCHAR, $8::VARCHAR, $9::VARCHAR, $10::VARCHAR, $11::VARCHAR, $12::UUID) RETURNING users.created_at, users.updated_at
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00136s] ('demo@linguifai.com', 'live_demo_user', '$2b$12$bN3HkatFxc5n3axSJhOP3.l45/IHPcimO719nN0a0tGonxqFGMaca', 'user', True, False, 'gpt-4o', 'dark', 'formal', 'auto', 'en', UUID('dfbcea44-924e-431b-8da0-198288b91a45'))
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00073s] (UUID('dfbcea44-924e-431b-8da0-198288b91a45'),)
+2026-06-12T05:09:58 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:09:58 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/register | status=201 | duration=648.78ms | request_id=efe335ed-d17e-4d1e-9a9e-98dee9f506a1
+2026-06-12T05:10:09 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/login | client=172.18.0.1 | request_id=51d9b607-8a8c-449d-a251-8bf9c3b94631
+2026-06-12T05:10:09 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:10:09 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-12T05:10:09 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 11.05s ago] ('demo@linguifai.com',)
+2026-06-12T05:10:09 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:10:09 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/login | status=200 | duration=410.17ms | request_id=51d9b607-8a8c-449d-a251-8bf9c3b94631
+2026-06-12T05:10:09 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/translate/ | client=172.18.0.1 | request_id=1dbbce2f-e98f-4c35-8ed3-58fb9f771165
+2026-06-12T05:10:09 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/translate/ | status=307 | duration=3.00ms | request_id=1dbbce2f-e98f-4c35-8ed3-58fb9f771165
+2026-06-12T05:10:09 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/translate | client=172.18.0.1 | request_id=5096421b-e004-47e1-a28c-fcc538178913
+2026-06-12T05:10:09 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/translate | status=403 | duration=6.76ms | request_id=5096421b-e004-47e1-a28c-fcc538178913
+2026-06-12T05:10:21 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/login | client=172.18.0.1 | request_id=250d9874-4728-4b91-8325-7f435114ae70
+2026-06-12T05:10:21 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:10:21 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-12T05:10:21 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 23.3s ago] ('demo@linguifai.com',)
+2026-06-12T05:10:21 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:10:21 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/login | status=200 | duration=518.75ms | request_id=250d9874-4728-4b91-8325-7f435114ae70
+2026-06-12T05:10:21 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/translate | client=172.18.0.1 | request_id=673b495f-cfc4-45dd-8d11-e65a8d8a9662
+2026-06-12T05:10:21 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:10:21 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:10:21 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00156s] (UUID('dfbcea44-924e-431b-8da0-198288b91a45'),)
+2026-06-12T05:10:21 | INFO     | app.utils.cache:20 | get_redis | Initializing Redis connection to redis://redis:6379/0
+2026-06-12T05:10:21 | INFO     | app.services.translation_service:90 | translate | Cache MISS — calling AI provider: gemini-1.5-pro
+2026-06-12T05:10:21 | WARNING  | app.services.ai.provider_factory:58 | get_provider | API key for model 'gemini-1.5-pro' (GOOGLE_API_KEY) not configured. Attempting fallback...
+2026-06-12T05:10:22 | WARNING  | app.api.v1.endpoints.translation:68 | translate_text | Translation validation error: No AI provider is configured. Please add at least one API key to your .env file:
+  - OPENAI_API_KEY  (https://platform.openai.com/api-keys)
+  - GOOGLE_API_KEY  (https://aistudio.google.com/app/apikey — FREE)
+  - GROQ_API_KEY    (https://console.groq.com/keys — FREE)
+2026-06-12T05:10:22 | INFO     | sqlalchemy.engine.Engine:2704 | _connection_rollback_impl | ROLLBACK
+2026-06-12T05:10:22 | ERROR    | app.db.session:56 | get_db | Database session rolled back due to exception: 400: No AI provider is configured. Please add at least one API key to your .env file:
+  - OPENAI_API_KEY  (https://platform.openai.com/api-keys)
+  - GOOGLE_API_KEY  (https://aistudio.google.com/app/apikey — FREE)
+  - GROQ_API_KEY    (https://console.groq.com/keys — FREE)
+2026-06-12T05:10:22 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/translate | status=400 | duration=117.20ms | request_id=673b495f-cfc4-45dd-8d11-e65a8d8a9662
+2026-06-12T05:11:53 | INFO     | app.core.logging:74 | setup_logging | Logging initialized | level=DEBUG | file=logs/app.log
+2026-06-12T05:11:53 | INFO     | main:21 | lifespan | ============================================================
+2026-06-12T05:11:53 | INFO     | main:22 | lifespan | Starting AI Language Translation API v1.0.0
+2026-06-12T05:11:53 | INFO     | main:23 | lifespan | ============================================================
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select pg_catalog.version()
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | select current_schema()
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | show standard_conforming_strings
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [raw sql] ()
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:11:53 | INFO     | app.db.init_db:27 | init_db | Running database initialization...
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT 1
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00061s] ()
+2026-06-12T05:11:53 | INFO     | app.db.init_db:31 | init_db | Database connection verified.
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00090s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.008543s ago] ('translations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01027s ago] ('documents', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.01194s ago] ('usage_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-06-12T05:11:53 | INFO     | app.db.init_db:35 | init_db | Tables created/verified: ['users', 'translations', 'documents', 'usage_logs']
+2026-06-12T05:11:53 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:11:53 | INFO     | main:25 | lifespan | Database tables initialized successfully.
+2026-06-12T05:12:54 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/auth/login | client=172.18.0.1 | request_id=a623d838-5373-43f4-ac22-ba729978ffad
+2026-06-12T05:12:54 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:12:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = $1::VARCHAR
+2026-06-12T05:12:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00208s] ('abc123@gmail.com',)
+2026-06-12T05:12:55 | DEBUG    | passlib.handlers.bcrypt:625 | _load_backend_mixin | detected 'bcrypt' backend, version '4.0.1'
+2026-06-12T05:12:55 | DEBUG    | passlib.handlers.bcrypt:406 | _finalize_backend_mixin | 'bcrypt' backend lacks $2$ support, enabling workaround
+2026-06-12T05:12:55 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:12:55 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/auth/login | status=200 | duration=569.20ms | request_id=a623d838-5373-43f4-ac22-ba729978ffad
+2026-06-12T05:12:55 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/auth/me | client=172.18.0.1 | request_id=35c73f0e-6231-42e1-9926-3bfc2c69df1b
+2026-06-12T05:12:55 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:12:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:12:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00067s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:12:55 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:12:55 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/auth/me | status=200 | duration=21.33ms | request_id=35c73f0e-6231-42e1-9926-3bfc2c69df1b
+2026-06-12T05:12:56 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/translate/models | client=172.18.0.1 | request_id=36e7f58d-97fe-4a1d-baef-77266fff848e
+2026-06-12T05:12:56 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/translate/models | status=200 | duration=4.97ms | request_id=36e7f58d-97fe-4a1d-baef-77266fff848e
+2026-06-12T05:12:56 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/translate/models | client=172.18.0.1 | request_id=43dd88c7-115f-4512-8497-d931843e9d46
+2026-06-12T05:12:56 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:12:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:12:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 0.9492s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:12:56 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:12:56 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/translate/models | status=200 | duration=22.64ms | request_id=43dd88c7-115f-4512-8497-d931843e9d46
+2026-06-12T05:12:56 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/languages | client=172.18.0.1 | request_id=f650167d-62db-47c5-bff8-0753bb2dbdce
+2026-06-12T05:12:56 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/languages | status=200 | duration=3.29ms | request_id=f650167d-62db-47c5-bff8-0753bb2dbdce
+2026-06-12T05:12:56 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/languages | client=172.18.0.1 | request_id=7340d230-49ca-4e68-9cdf-994d839a5f63
+2026-06-12T05:12:56 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/languages | status=200 | duration=6.52ms | request_id=7340d230-49ca-4e68-9cdf-994d839a5f63
+2026-06-12T05:15:25 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/history | client=172.18.0.1 | request_id=edb050b7-9b7a-48d6-83cb-41f87abaab6d
+2026-06-12T05:15:25 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/history | status=200 | duration=89.59ms | request_id=edb050b7-9b7a-48d6-83cb-41f87abaab6d
+2026-06-12T05:15:25 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/history | client=172.18.0.1 | request_id=6b1c5063-4daf-4eb1-9a2c-f4d3db527467
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 150s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT count(*) AS count_1 
+FROM translations 
+WHERE translations.user_id = $1::UUID
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00100s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT translations.user_id, translations.source_language, translations.target_language, translations.source_text, translations.translated_text, translations.tone, translations.ai_model, translations.confidence_score, translations.alternative_translations, translations.translator_notes, translations.is_starred, translations.char_count, translations.latency_ms, translations.tokens_used, translations.id, translations.created_at, translations.updated_at 
+FROM translations 
+WHERE translations.user_id = $1::UUID ORDER BY translations.created_at DESC 
+ LIMIT $2::INTEGER OFFSET $3::INTEGER
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00154s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'), 10, 0)
+2026-06-12T05:15:25 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:15:25 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/history | status=200 | duration=501.30ms | request_id=6b1c5063-4daf-4eb1-9a2c-f4d3db527467
+2026-06-12T05:15:27 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/documents | client=172.18.0.1 | request_id=f088fa4d-f457-48f2-aecb-5491c4acb2c8
+2026-06-12T05:15:27 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/documents | status=200 | duration=2.36ms | request_id=f088fa4d-f457-48f2-aecb-5491c4acb2c8
+2026-06-12T05:15:27 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=e951a2a3-c667-437e-8ddd-62676c83be1a
+2026-06-12T05:15:27 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:15:27 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:15:27 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 152s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:15:27 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-12T05:15:27 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00075s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:15:27 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:15:27 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=26.19ms | request_id=e951a2a3-c667-437e-8ddd-62676c83be1a
+2026-06-12T05:15:56 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/documents/upload | client=172.18.0.1 | request_id=82454708-05fb-44d3-80c5-a33611c93c82
+2026-06-12T05:15:56 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/documents/upload | status=200 | duration=2.35ms | request_id=82454708-05fb-44d3-80c5-a33611c93c82
+2026-06-12T05:15:56 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/documents/upload | client=172.18.0.1 | request_id=1cc20e5a-5d55-410e-84e4-0d6fbaf47350
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_begin with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[42:61]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[63:111]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[113:125]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[127:142]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_headers_finished with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[146:49152]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:82197]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[82198:108871]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[108872:131072]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:126972]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[126973:128320]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[128321:176607]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[176608:256000]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:176990]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[176991:202752]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:29579]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[29580:32801]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:2]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[32803:32901]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:2]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[32903:33041]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:2]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[33043:33221]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:2]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[33223:33441]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:2]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[33443:33661]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:2]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[33663:33854]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_begin with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[33898:33917]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[33919:33952]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_headers_finished with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[33956:33961]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_begin with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[34005:34024]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[34026:34059]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_headers_finished with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[34063:34067]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_begin with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[34111:34130]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[34132:34154]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_headers_finished with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[34158:34164]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_begin with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[34208:34227]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[34229:34252]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_headers_finished with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[34256:34262]
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_end with no data
+2026-06-12T05:15:56 | DEBUG    | multipart.multipart:626 | callback | Calling on_end with no data
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 180.7s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:15:56 | INFO     | app.services.document_service:71 | create_document | Stored uploaded file: deccan ai.pdf (672684 bytes) → storage/originals/e3e8e401-6e57-403a-807f-d3bd5bd33a21.pdf
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | INSERT INTO documents (user_id, original_filename, stored_filename, file_type, file_size_bytes, source_language, target_language, tone, ai_model, status, error_message, translated_filename, id) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::BIGINT, $6::VARCHAR, $7::VARCHAR, $8::VARCHAR, $9::VARCHAR, $10::VARCHAR, $11::VARCHAR, $12::VARCHAR, $13::UUID) RETURNING documents.created_at, documents.updated_at
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00289s] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'), 'deccan ai.pdf', 'e3e8e401-6e57-403a-807f-d3bd5bd33a21.pdf', 'pdf', 672684, 'auto', 'hindi', 'formal', 'gpt-4o', 'pending', None, None, UUID('68d2436a-8e00-4c37-b837-8dda05d112f2'))
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.id = $1::UUID
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [generated in 0.00067s] (UUID('68d2436a-8e00-4c37-b837-8dda05d112f2'),)
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:15:56 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/documents/upload | status=202 | duration=629.43ms | request_id=1cc20e5a-5d55-410e-84e4-0d6fbaf47350
+2026-06-12T05:15:56 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=58525bb1-92d3-4b1a-a8ed-180e66c5eba0
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 181.3s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 29.28s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:15:56 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:15:56 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=14.44ms | request_id=58525bb1-92d3-4b1a-a8ed-180e66c5eba0
+2026-06-12T05:16:20 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=25a5d8d3-63f2-4682-bd97-ac792357e28c
+2026-06-12T05:16:20 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:16:20 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:16:20 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 204.8s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:20 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-12T05:16:20 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 52.72s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:20 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:16:20 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=10.92ms | request_id=25a5d8d3-63f2-4682-bd97-ac792357e28c
+2026-06-12T05:16:22 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=e571f547-5f96-4e28-98e4-6f3fb90b5bfb
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 206.7s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 54.66s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:16:22 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=12.79ms | request_id=e571f547-5f96-4e28-98e4-6f3fb90b5bfb
+2026-06-12T05:16:22 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=3622ce57-b7f8-4904-a08b-0f253c67dd98
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 207.2s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 55.18s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:16:22 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=10.65ms | request_id=3622ce57-b7f8-4904-a08b-0f253c67dd98
+2026-06-12T05:16:22 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=38d0afc4-9387-4052-aa61-a0e5059fb7d0
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 207.4s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 55.35s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:16:22 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=9.49ms | request_id=38d0afc4-9387-4052-aa61-a0e5059fb7d0
+2026-06-12T05:16:22 | INFO     | app.core.middleware:34 | dispatch | → GET /api/v1/documents | client=172.18.0.1 | request_id=f2c9806a-ecd4-4040-b372-f5bed5a29e97
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 207.6s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT documents.user_id, documents.original_filename, documents.stored_filename, documents.file_type, documents.file_size_bytes, documents.source_language, documents.target_language, documents.tone, documents.ai_model, documents.status, documents.error_message, documents.translated_filename, documents.id, documents.created_at, documents.updated_at 
+FROM documents 
+WHERE documents.user_id = $1::UUID ORDER BY documents.created_at DESC
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 55.52s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:22 | INFO     | sqlalchemy.engine.Engine:2707 | _connection_commit_impl | COMMIT
+2026-06-12T05:16:22 | INFO     | app.core.middleware:46 | dispatch | ← GET /api/v1/documents | status=200 | duration=9.74ms | request_id=f2c9806a-ecd4-4040-b372-f5bed5a29e97
+2026-06-12T05:16:55 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/speech/transcribe | client=172.18.0.1 | request_id=d1f5f6d9-ef1d-4a48-803e-4753d3d1a2d6
+2026-06-12T05:16:55 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/speech/transcribe | status=200 | duration=2.77ms | request_id=d1f5f6d9-ef1d-4a48-803e-4753d3d1a2d6
+2026-06-12T05:16:55 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/speech/transcribe | client=172.18.0.1 | request_id=411ab4a5-5efc-4c04-9c6e-62958eae267e
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_begin with no data
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[42:61]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[63:112]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_field with data[114:126]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_header_value with data[128:138]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:626 | callback | Calling on_header_end with no data
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:626 | callback | Calling on_headers_finished with no data
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[142:55077]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:1]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[55078:106712]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:89896]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:623 | callback | Calling on_part_data with data[0:21832]
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:626 | callback | Calling on_part_end with no data
+2026-06-12T05:16:55 | DEBUG    | multipart.multipart:626 | callback | Calling on_end with no data
+2026-06-12T05:16:55 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:16:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:16:55 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 240.4s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:16:55 | INFO     | sqlalchemy.engine.Engine:2704 | _connection_rollback_impl | ROLLBACK
+2026-06-12T05:16:55 | ERROR    | app.db.session:56 | get_db | Database session rolled back due to exception: AsyncClient.__init__() got an unexpected keyword argument 'proxies'
+2026-06-12T05:16:55 | ERROR    | app.core.middleware:125 | dispatch | Rate limiter Redis error: AsyncClient.__init__() got an unexpected keyword argument 'proxies'
+2026-06-12T05:17:16 | INFO     | app.core.middleware:34 | dispatch | → OPTIONS /api/v1/translate | client=172.18.0.1 | request_id=274dce64-2d52-41a3-a042-ab71f15d6dd5
+2026-06-12T05:17:16 | INFO     | app.core.middleware:46 | dispatch | ← OPTIONS /api/v1/translate | status=200 | duration=3.12ms | request_id=274dce64-2d52-41a3-a042-ab71f15d6dd5
+2026-06-12T05:17:16 | INFO     | app.core.middleware:34 | dispatch | → POST /api/v1/translate | client=172.18.0.1 | request_id=8817292a-a07c-4998-a903-23cebea6776f
+2026-06-12T05:17:16 | INFO     | sqlalchemy.engine.Engine:2701 | _connection_begin_impl | BEGIN (implicit)
+2026-06-12T05:17:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | SELECT users.email, users.username, users.hashed_password, users.role, users.is_active, users.is_verified, users.preferred_model, users.preferred_theme, users.preferred_tone, users.default_source_lang, users.default_target_lang, users.id, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1::UUID
+2026-06-12T05:17:16 | INFO     | sqlalchemy.engine.Engine:1846 | _execute_context | [cached since 261.6s ago] (UUID('56f4f191-8030-4df9-9a9a-c83343ab4a26'),)
+2026-06-12T05:17:18 | INFO     | app.services.translation_service:53 | translate | Auto-detected source language: en
+2026-06-12T05:17:18 | INFO     | app.utils.cache:20 | get_redis | Initializing Redis connection to redis://redis:6379/0
+2026-06-12T05:17:18 | INFO     | app.services.translation_service:90 | translate | Cache MISS — calling AI provider: gpt-4o
+2026-06-12T05:17:18 | WARNING  | app.services.ai.provider_factory:58 | get_provider | API key for model 'gpt-4o' (OPENAI_API_KEY) not configured. Attempting fallback...
+2026-06-12T05:17:18 | WARNING  | app.services.ai.provider_factory:68 | get_provider | Falling back to: GroqProvider (model: llama-3.1-70b-versatile)
+2026-06-12T05:17:18 | ERROR    | app.api.v1.endpoints.translation:71 | translate_text | Translation processing failed: AsyncClient.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "/app/app/api/v1/endpoints/translation.py", line 65, in translate_text
+    return await service.translate(request, user_id=current_user.id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/app/services/translation_service.py", line 91, in translate
+    provider = ProviderFactory.get_provider(request.model)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/app/services/ai/provider_factory.py", line 71, in get_provider
+    return fb_class(model=fb_model_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/app/services/ai/groq_provider.py", line 37, in __init__
+    self.client = AsyncOpenAI(
+                  ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/openai/_client.py", line 337, in __init__
+    super().__init__(
+  File "/usr/local/lib/python3.12/site-packages/openai/_base_client.py", line 1419, in __init__
+    self._client = http_client or AsyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/openai/_base_client.py", line 1316, in __init__
+    super().__init__(**kwargs)
+TypeError: AsyncClient.__init__() got an unexpected keyword argument 'proxies'
+2026-06-12T05:17:18 | INFO     | sqlalchemy.engine.Engine:2704 | _connection_rollback_impl | ROLLBACK
+2026-06-12T05:17:18 | ERROR    | app.db.session:56 | get_db | Database session rolled back due to exception: 500: An error occurred while processing the translation. Please try again later.
+2026-06-12T05:17:18 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/translate | status=500 | duration=1058.51ms | request_id=8817292a-a07c-4998-a903-23cebea6776f
+2026-06-12T05:17:18 | ERROR    | asyncio:118 | run | Task exception was never retrieved
+future: <Task finished name='Task-172' coro=<AsyncClient.aclose() done, defined at /usr/local/lib/python3.12/site-packages/httpx/_client.py:1978> exception=AttributeError("'AsyncHttpxClientWrapper' object has no attribute '_state'")>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/httpx/_client.py", line 1982, in aclose
+    if self._state != ClientState.CLOSED:
+       ^^^^^^^^^^^
+AttributeError: 'AsyncHttpxClientWrapper' object has no attribute '_state'
+2026-06-12T05:18:03 | INFO     | app.core.middleware:46 | dispatch | ← POST /api/v1/speech/transcribe | status=400 | duration=67950.48ms | request_id=411ab4a5-5efc-4c04-9c6e-62958eae267e
